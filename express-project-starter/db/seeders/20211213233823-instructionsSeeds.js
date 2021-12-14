@@ -106,11 +106,24 @@ Heat oil in large heavy pot over medium. Cook garlic, stirring often, until gold
 },
 
 { 
-  specification: [`Rinse rice in a sieve set in a bowl, changing water as needed, until water is just slightly milky.`, `Bring rice and 2 cups water to a boil in a medium saucepan. Reduce heat, cover, and simmer until water is absorbed and rice is tender, 8–10 minutes. Remove from heat; let stand 10 minutes.`],
+  specification: [`Rinse rice in a sieve set in a bowl, changing water as needed, until water is just slightly milky.`, `Bring rice and 2 cups water to a boil in a medium saucepan. Reduce heat, cover, and simmer until water is absorbed and rice is tender, 8–10 minutes. Remove from heat. let stand 10 minutes.`],
    recipeId: 13,
    createdAt: new Date(),
    updatedAt: new Date()
 },
+
+{
+  specification: [`Rinse rice in a sieve set in a bowl, changing water as needed, until water is just slightly milky. `, `Bring rice and 2 cups water to a boil in a medium saucepan. Reduce heat, cover, and simmer until water is absorbed and rice is tender, 8–10 minutes. Remove from heat; let stand 10 minutes.Whisk 2½ cups flour and 1 tsp. salt in a large bowl. Mix in sesame oil and 1 cup boiling water with a wooden spoon until a shaggy dough forms.` ,
+`Turn out dough onto a lightly floured surface and knead, adding flour as needed to prevent sticking, until dough is smooth, about 5 minutes. Cover. let rest at room temperature 1 hour.`,
+`Divide dough into 8 pieces.Working with one at a time, roll out on a lightly floured work surface as thin as possible(each should be approximately 10 in diameter). Brush about 2 tsp. chicken fat on dough and top with about ¼ cup scallions; season with salt. Roll dough away from you (like a jelly roll) into a thin cylinder, then, starting at 1 end, wind roll onto itself to create a coil (like a cinnamon roll). Cover and repeat with remaining dough. Let rest at room temperature 15 minutes.`,
+`Working with 1 coil at a time, roll out on a lightly floured surface to a 5 round (keep other coils covered). Repeat with remaining dough and stack as you go, separating with parchment or lightly greased foil brushed with vegetable oil.`
+],
+      recipeId: `14 `,
+      createdAt: new Date(),
+      updatedAt: new Date()
+
+},
+
 
 { 
   specification: [
