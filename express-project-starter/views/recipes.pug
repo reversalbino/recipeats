@@ -1,0 +1,33 @@
+extends layout.pug
+
+block content
+    div.catDiv
+        h2 Italian
+        each recipe in recipes
+            if recipe.categoryId < 2
+                div.recipeContainer
+                    img(src= recipe.image)
+                    h3= recipe.title
+    div.catDiv
+        h2 Mexican
+        each recipe in recipes
+            if recipe.categoryId > 1 && recipe.categoryId < 3
+                div.recipeContainer
+                    img(src= recipe.image)
+                    h3= recipe.title
+
+    div.catDiv
+        h2 Korean
+        each recipe in recipes
+            if recipe.categoryId > 2 && recipe.categoryId < 4
+                div.recipeContainer
+                    img(src= recipe.image)
+                    h3= recipe.title
+
+    div.catDiv
+        h2 Vietnamese
+        each recipe in recipes
+            if recipe.categoryId > 3
+                div.recipeContainer
+                    img(src= recipe.image)
+                    h3= recipe.title
