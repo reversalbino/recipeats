@@ -52,7 +52,7 @@ if(validatorErrors.isEmpty()) {
 }
 res.render('login', {
   title: 'Recipeats | Login',
-  errors, 
+  errors,
   username,
   csrfToken: req.csrfToken()
 })
@@ -135,7 +135,10 @@ router.post('/signup', csrfProtection, signupValidators, asyncHandler(async(req,
   }
 }));
 
-
+router.post('/logout', (req, res) => {
+  logoutUser(req, res);
+  res.redirect('/')
+});
 
 
 
