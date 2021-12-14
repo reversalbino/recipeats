@@ -4,8 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     image: DataTypes.STRING,
     author: DataTypes.STRING,
-    ratingId: DataTypes.INTEGER,
-    reviewId: DataTypes.INTEGER,
     categoryId: DataTypes.INTEGER
   }, {});
   Recipe.associate = function(models) {
@@ -14,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     Recipe.hasMany(models.Ingredient, {foreignKey: 'recipeId'})
     Recipe.hasMany(models.Instruction, {foreignKey: 'recipeId'})
     Recipe.hasMany(models.Review, {foreignKey: 'recipeId'})
-    Recipe.hasMany(models.Rating, {foreignKey: 'ratingId'})
+    Recipe.hasMany(models.Rating, {foreignKey: 'recipeId'})
   };
   return Recipe;
 };
