@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     const recipes = await db.Recipe.findAll();
-    res.send(recipes)
+    res.render('recipes', { recipes })
 })
 
 
