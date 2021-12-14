@@ -1,0 +1,12 @@
+extends layout.pug 
+
+block content
+    form.add-board(method="get" action="/boards/new")
+        button.add-board-btn Create a Board
+    if boards 
+        ul Boards List
+        for board in boards 
+            li: a.board-container(href=`/boards/${board.id}`)
+                li.board-name= board.name
+    else 
+        p You have no boards :(
