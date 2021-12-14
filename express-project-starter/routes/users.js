@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const { csrfProtection, asyncHandler } = require('./utils');
 const db = require('../db/models'); //db.Model
-
+const { loginUser } = require('../auth');
 
 const router = express.Router();
 
@@ -42,7 +42,8 @@ if(validatorErrors.isEmpty()) {
   if (user !== null) {
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword.toString())
     if (passwordMatch) {
-      return res.redirect('/')
+      loginUser(req, res, user);
+      return res.redirect('/');
     }
   }
   errors.push('Login failed for the provided email address and password');
@@ -121,6 +122,7 @@ router.post('/signup', csrfProtection, signupValidators, asyncHandler(async(req,
     const hashedPassword = await bcrypt.hash(password, 10);
     user.hashedPassword = hashedPassword;
     await user.save();
+    loginUser(req, res, user);
     res.redirect('/');
   } else {
     const errors = validatorErrors.array().map((error) => error.msg);
