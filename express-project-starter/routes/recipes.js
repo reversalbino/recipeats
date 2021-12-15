@@ -23,7 +23,9 @@ router.get('/:id', async (req, res, next) => {
 //    console.log(instructionList)
 
     res.render('recipe-detail', { recipe })
-})
+});
+
+
 
 
 module.exports = router;
