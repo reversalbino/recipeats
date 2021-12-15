@@ -10,17 +10,17 @@ html
         script(src='/javascripts/index.js')
   body
      nav(class='navBar')
-      a(href='/') Home
-      button(class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarText' aria-controls='navbarText' aria-expanded='false' aria-label='Toggle navigation')
-        span(class='navbar-toggler-icon')
-      div(class='collapse navbar-collapse' id='navbarText')
-        ul(class='navbar-nav mr-auto')
+      a(class='navButton' href='/') Home
+      a(class='navButton' href='/recipes') Recipes
+      div
+        ul
         if locals.authenticated
-          span(class='navbar-text px-4') Welcome #{user.username}!
-          form(class='form-inline pr-4' action='/users/logout' method='post')
-            button(class='btn btn-sm btn-warning' type='submit') Logout
+          a(href='/boards') Boards
+          span Welcome #{user.username}!
+          form(action='/users/logout' method='post')
+            button(class='navButton' type='submit') Logout
         else
           span(class='navbar-text px-4')
-            a(class='btn btn-sm btn-dark mr-2' href='/users/login') Login
-            a(class='btn btn-sm btn-dark' href='/users/signup') Sign up
+            a(class='navButton' href='/users/login') Login
+            a(class='navButton' href='/users/signup') Sign up
         block content

@@ -16,13 +16,18 @@ router.get('/:id', async (req, res, next) => {
     const recipe = await db.Recipe.findByPk(req.params.id, {
         include: [db.Ingredient, db.Instruction]
     });
+ let recipeBoards;
+    // if(req.session.auth) {
+        recipeBoards = await db.Board.findAll({
+            where: {userId: req.session.auth.userId}
+        })
+    console.log(recipe)
+    //    const instructionList = instructions.forEach(instruction => {
+        //        console.log(instruction.dataValues.specification.split(','))
+        //    })
+        //    console.log(instructionList)
+    res.render('recipe-detail', { recipe, recipeBoards })
 
-//    const instructionList = instructions.forEach(instruction => {
-//        console.log(instruction.dataValues.specification.split(','))
-//    })
-//    console.log(instructionList)
-
-    res.render('recipe-detail', { recipe })
 });
 
 router.use((req, res, next) => {
@@ -30,17 +35,18 @@ router.use((req, res, next) => {
     next();
 });
 
-router.post('/:rId/boards/:bId', async (req, res, next) => {
+router.post('/:rId/boards', async (req, res, next) => {
     console.log('--------ADD RECIPE TO BOARD 2');
     const recipeId = req.params.rId
-    const boardId = req.params.bId
+    const boardId = req.body.addToBoard
 
-    let addedRecipe = await db.RecipesOnBoard.create({
+    let addedRecipe = await db.RecipesOnBoard.build({
         recipeId,
         boardId
     })
 
-    console.log("HELLO IM RIGHT HERE", req.params.id)
+    
+    console.log("---------------------------------", req.body.addToBoard)
     res.redirect('/');
 })
 
