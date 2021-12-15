@@ -1,0 +1,19 @@
+extends layout.pug 
+
+block content
+    div.parentDivOne    
+        div.imageDiv
+            img(src= recipe.image)
+        div.textDiv
+            h2= recipe.id 
+            h1= recipe.title 
+            h2= recipe.author 
+            div.ratings Ratings
+    div.parentDivTwo
+        div.ingredients
+            each ingredient in recipe.Ingredients
+                p= ingredient.amount + " " + ingredient.measurementUnit + " " + ingredient.name
+        div.instructions
+            each instruction in instructions   
+                p= instruction.specification
+    div.reviews
