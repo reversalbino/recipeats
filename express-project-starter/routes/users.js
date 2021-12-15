@@ -140,6 +140,19 @@ router.post('/logout', (req, res) => {
   res.redirect('/')
 });
 
+router.get('/login/demo', asyncHandler(async(req, res) => {
+  try{
+    const user = await db.User.findOne({
+      where: {
+        username: 'demo'
+      }
+    });
 
+    loginUser(req, res, user);
+    res.redirect('/');
+  } catch(e) {
+    res.redirect('/');
+  }
+}));
 
 module.exports = router;

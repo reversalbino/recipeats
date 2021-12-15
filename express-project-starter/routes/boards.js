@@ -27,7 +27,6 @@ const boardValidator = [
 
 router.post('/new', requireAuth, boardValidator, csrfProtection, asyncHandler(async(req, res) => {
     const name = req.body.boardName;
-    console.log(req.boardName);
     const userId = req.session.auth.userId
     let board = db.Board.build({
         name,
@@ -50,14 +49,29 @@ router.post('/new', requireAuth, boardValidator, csrfProtection, asyncHandler(as
 }));
 
 router.get('/:id(\\d+)', requireAuth, asyncHandler(async(req, res) => {
-const boardId = req.params.id
-// console.log('----BID-----', boardId);
-let recipes = await db.Recipe.findAll({
-    where: id=1
-})
-console.log('----recipes-----', recipes);
-res.render('board', {title: 'Recipeats | Board', recipes})
-}))
+    const boardId = req.params.id
+    // console.log('----BID-----', boardId);
+    let recipes = await db.Recipe.findAll({
+        where: id=1
+    })}));
+
+router.use((req, res, next) => {
+    console.log('------------DELETE BOARD 1---------------')
+    next();
+});
+
+router.post('/delete/:id', requireAuth, asyncHandler(async(req, res) => {
+    console.log('-----------DELETE BOARD 2----------')
+    let boardId = req.params.id;
+    let board = await db.Board.findByPk(boardId)
+
+    await board.destroy();
+    res.redirect('/boards');
+}));
+
+// console.log('----recipes-----', recipes);
+//     res.render('board', {title: 'Recipeats | Board', recipes})
+
 
 module.exports = router;
 
