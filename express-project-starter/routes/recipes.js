@@ -16,7 +16,7 @@ router.get('/:id', async (req, res, next) => {
     const recipe = await db.Recipe.findByPk(req.params.id, {
         include: [db.Ingredient, db.Instruction]
     });
-    
+
 //    const instructionList = instructions.forEach(instruction => {
 //        console.log(instruction.dataValues.specification.split(','))
 //    })
@@ -25,7 +25,18 @@ router.get('/:id', async (req, res, next) => {
     res.render('recipe-detail', { recipe })
 });
 
+router.post('/boards/2', async (req, res, next) => {
+    const recipeId = 2
+    const userId = req.session.auth.userId;
 
+    let addedRecipe = db.RecipesOnBoard.create({
+        recipeId,
+        userId
+    })
+
+    console.log("HELLO IM RIGHT HERE", req.params.id)
+
+})
 
 
 module.exports = router;
