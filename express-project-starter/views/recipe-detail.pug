@@ -9,6 +9,14 @@ block content
             h1= recipe.title 
             h2= recipe.author 
             div.ratings Ratings
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
     div.parentDivTwo
         div.ingredients
             each ingredient in recipe.Ingredients
