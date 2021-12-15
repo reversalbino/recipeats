@@ -7,21 +7,23 @@ block content
             each recipe in recipes
                 if recipe.categoryId < 2
                     div.recipeContainer
-                        img(src= recipe.image)
-                        h3= recipe.title
+                        a(href=`/recipes/${recipe.id}`)
+                            img(src= recipe.image)
+                            h3= recipe.title
         h2 Mexican
         div.catDiv
             each recipe in recipes
                 if recipe.categoryId > 1 && recipe.categoryId < 3
                     div.recipeContainer
-                        img(src= recipe.image)
-                        h3= recipe.title
+                        a(href=`/recipes/${recipe.id}`)
+                            img(src= recipe.image)
+                            h3= recipe.title
 
         h2 Korean
         div.catDiv
             each recipe in recipes
                 if recipe.categoryId > 2 && recipe.categoryId < 4
-                    div.recipeContainer
+                    a(href=`/recipes/${recipe.id}`)
                         img(src= recipe.image)
                         h3= recipe.title
 
@@ -29,6 +31,6 @@ block content
         div.catDiv
             each recipe in recipes
                 if recipe.categoryId > 3
-                    div.recipeContainer
+                    a(href=`/recipes/${recipe.id}`)
                         img(src= recipe.image)
                         h3= recipe.title
