@@ -9,6 +9,9 @@ block content
             h1= recipe.title
             h2= recipe.author
             div.ratings Ratings
+            if errors
+                each error in errors
+                    li= error
             form(action=`/recipes/${recipe.id}/boards` method="post")
                 select(name="addToBoard")
                     each board in recipeBoards

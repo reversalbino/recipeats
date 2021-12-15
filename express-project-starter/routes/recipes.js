@@ -5,6 +5,7 @@ const db = require('../db/models'); //db.Model
 const { loginUser, logoutUser } = require('../auth');
 
 const router = express.Router();
+let errors = [];
 
 
 router.get('/', async (req, res, next) => {
@@ -26,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
         //        console.log(instruction.dataValues.specification.split(','))
         //    })
         //    console.log(instructionList)
-    res.render('recipe-detail', { recipe, recipeBoards })
+    res.render('recipe-detail', { recipe, recipeBoards, errors })
 
 });
 
@@ -39,15 +40,32 @@ router.post('/:rId/boards', async (req, res, next) => {
     console.log('--------ADD RECIPE TO BOARD 2');
     const recipeId = req.params.rId
     const boardId = req.body.addToBoard
+    //NOTE query all recipes on a specific board that belong to a user 
+    
 
-    let addedRecipe = await db.RecipesOnBoard.build({
-        recipeId,
-        boardId
+    const recipesOnSpecificBoard = await db.RecipesOnBoard.findAll({
+        where: {
+            boardId
+        }
+    });
+   const recipeIdList = recipesOnSpecificBoard.map(recipe => {
+        return recipe.recipeId
     })
 
+    if(!recipeIdList.includes(parseInt(recipeId, 10))) {
+        let addedRecipe = await db.RecipesOnBoard.create({
+        recipeId,
+            boardId
+        });
+        errors = []
+    } else {
+        errors.push('Recipe is already on this board');
+
+    }
     
-    console.log("---------------------------------", req.body.addToBoard)
-    res.redirect('/');
+    console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
+    console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
+    res.redirect(`/recipes/${recipeId}`)
 })
 
 
