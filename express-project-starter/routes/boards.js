@@ -51,9 +51,15 @@ router.post('/new', requireAuth, boardValidator, csrfProtection, asyncHandler(as
 router.get('/:id(\\d+)', requireAuth, asyncHandler(async(req, res) => {
     const boardId = req.params.id
     // console.log('----BID-----', boardId);
-    let recipes = await db.Recipe.findAll({
-        where: id=1
-    })}));
+    let recipesOnSpecificBoard = await db.Board.findByPk(boardId,{
+        include: [ db.Recipe ]
+    });
+    console.log('================', recipesOnSpecificBoard.dataValues.Recipes[0]);
+    // db.RecipesOnBoard.findAll();
+
+    // console.log(recipes[0].Recipes);
+    res.render('board', { title: 'Recipeats | Board', recipesOnSpecificBoard})
+}));
 
 router.use((req, res, next) => {
     console.log('------------DELETE BOARD 1---------------')

@@ -25,17 +25,23 @@ router.get('/:id', async (req, res, next) => {
     res.render('recipe-detail', { recipe })
 });
 
-router.post('/boards/2', async (req, res, next) => {
-    const recipeId = 2
-    const userId = req.session.auth.userId;
+router.use((req, res, next) => {
+    console.log('--------ADD RECIPE TO BOARD 1');
+    next();
+});
 
-    let addedRecipe = db.RecipesOnBoard.create({
+router.post('/:rId/boards/:bId', async (req, res, next) => {
+    console.log('--------ADD RECIPE TO BOARD 2');
+    const recipeId = req.params.rId
+    const boardId = req.params.bId
+
+    let addedRecipe = await db.RecipesOnBoard.create({
         recipeId,
-        userId
+        boardId
     })
 
     console.log("HELLO IM RIGHT HERE", req.params.id)
-
+    res.redirect('/');
 })
 
 

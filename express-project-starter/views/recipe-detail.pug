@@ -9,7 +9,7 @@ block content
             h1= recipe.title
             h2= recipe.author
             div.ratings Ratings
-            form(action="/boards/2" method="post")
+            form(action=`/recipes/${recipe.id}/boards/1` method="post")
                 <button name="addToBoard" value="">Add to Board</button>
     div.parentDivTwo
         div.ingredients
