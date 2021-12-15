@@ -49,5 +49,15 @@ router.post('/new', requireAuth, boardValidator, csrfProtection, asyncHandler(as
     }
 }));
 
+router.get('/:id(\\d+)', requireAuth, asyncHandler(async(req, res) => {
+const boardId = req.params.id
+// console.log('----BID-----', boardId);
+let recipes = await db.Recipe.findAll({
+    where: id=1
+})
+console.log('----recipes-----', recipes);
+res.render('board', {title: 'Recipeats | Board', recipes})
+}))
+
 module.exports = router;
 
