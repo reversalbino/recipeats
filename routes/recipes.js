@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator');
 const { csrfProtection, asyncHandler } = require('./utils');
 const db = require('../db/models'); //db.Model
 const { loginUser, logoutUser, requireAuth } = require('../auth');
+const { application } = require('express');
 
 const router = express.Router();
 let errors = [];
@@ -25,7 +26,6 @@ router.get('/:id', csrfProtection, async (req, res, next) => {
         recipeBoards = await db.Board.findAll({
             where: {userId: req.session.auth.userId}
         })
-    console.log(recipe)
     }
     //    const instructionList = instructions.forEach(instruction => {
         //            console.log(instruction.dataValues.specification.split(','))
@@ -79,11 +79,29 @@ router.use((req, res, next) => {
 router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
     console.log('------------------review 2-----', req.body)
     const { _csrf, reviewbody } = req.body
-    console.log(reviewbody);
+    // console.log(reviewbody);
     const userId = req.session.auth.userId
     db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
     res.redirect('/')
-}))
+}));
+router.use((req, res, next) => {
+    console.log('------------------TESTING DELETE FUNCTION')
+    next()
+})
+
+router.post('/reviews/:id/delete', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
+    console.log('------------------delete -----');
+    const userId = req.session.auth.userId
+    const reviewToDelete = await db.Review.findByPk(req.params.id);
+    reviewToDelete.destroy();
+    return;
+    // res.send(`SUCCESFULLY DELETED`)
+    //  console.log(reviewToDelete)
+    //  .destroy(); 
+
+}));
+
+
 
 
 module.exports = router;
