@@ -9,14 +9,18 @@ block content
             h1= recipe.title
             h2= recipe.author
             div.ratings Ratings
-            if errors
-                each error in errors
-                    li= error
-            form(action=`/recipes/${recipe.id}/boards` method="post")
-                select(name="addToBoard")
-                    each board in recipeBoards
-                        option(value= board.id)= board.name
-                button(type="submit") Add to Board
+            if locals.authenticated
+                if errors
+                    each error in errors
+                        li= error
+                a(href="/boards/new") Create a new board!
+                form(action=`/recipes/${recipe.id}/boards` method="post")
+                    select(name="addToBoard")
+                        each board in recipeBoards
+                            option(value= board.id)= board.name
+                    button(type="submit") Add to Board
+            if !locals.authenticated
+                a(href=`/users/login`) Log in to create a board!
     div.parentDivTwo
         div.ingredients
             each ingredient in recipe.Ingredients
@@ -24,5 +28,22 @@ block content
         div.instructions
             each instruction in recipe.Instructions
                 p= instruction.specification
-
-    div.reviews
+    div.reviews 
+        if locals.authenticated
+            form(action= `/recipes/${recipe.id}/review/add`, method="post") 
+                input(type="hidden" value=csrfToken name="_csrf")
+                textarea(name="reviewbody" value= reviews.reviewText maxlength='255')
+                button(type="submit") Submit Review
+        if reviews 
+            each review in reviews  
+                table 
+                    thead 
+                        tr
+                            th username
+                            th review 
+                            th rating
+                    tbody 
+                        tr
+                            td= review.userId
+                            td= review.reviewText
+                        //- tr= rating.value

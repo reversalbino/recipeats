@@ -2,7 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { csrfProtection, asyncHandler } = require('./utils');
 const db = require('../db/models'); //db.Model
-const { loginUser, logoutUser } = require('../auth');
+const { loginUser, logoutUser, requireAuth } = require('../auth');
 
 const router = express.Router();
 let errors = [];
@@ -13,31 +13,34 @@ router.get('/', async (req, res, next) => {
     res.render('recipes', { recipes })
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', csrfProtection, async (req, res, next) => {
     const recipe = await db.Recipe.findByPk(req.params.id, {
         include: [db.Ingredient, db.Instruction]
     });
  let recipeBoards;
-    // if(req.session.auth) {
+    const reviews = await db.Review.findAll({
+        where: {recipeId: req.params.id}
+    });
+    if(req.session.auth) {
         recipeBoards = await db.Board.findAll({
             where: {userId: req.session.auth.userId}
         })
     console.log(recipe)
+    }
     //    const instructionList = instructions.forEach(instruction => {
-        //        console.log(instruction.dataValues.specification.split(','))
-        //    })
-        //    console.log(instructionList)
-    res.render('recipe-detail', { recipe, recipeBoards, errors })
-
+        //            console.log(instruction.dataValues.specification.split(','))
+        //        })
+        //        console.log(instructionList)
+        res.render('recipe-detail', { recipe, recipeBoards, reviews, csrfToken: req.csrfToken()})
 });
 
-router.use((req, res, next) => {
-    console.log('--------ADD RECIPE TO BOARD 1');
-    next();
-});
+// router.use((req, res, next) => {
+//     // console.log('--------ADD RECIPE TO BOARD 1');
+//     next();
+// });
 
 router.post('/:rId/boards', async (req, res, next) => {
-    console.log('--------ADD RECIPE TO BOARD 2');
+    // console.log('--------ADD RECIPE TO BOARD 2');
     const recipeId = req.params.rId
     const boardId = req.body.addToBoard
     //NOTE query all recipes on a specific board that belong to a user 
@@ -63,10 +66,24 @@ router.post('/:rId/boards', async (req, res, next) => {
 
     }
     
-    console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
-    console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
+    // console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
+    // console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
     res.redirect(`/recipes/${recipeId}`)
 })
+
+router.use((req, res, next) => {
+    console.log('------------------review 1-----');
+    next();
+})
+
+router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
+    console.log('------------------review 2-----', req.body)
+    const { _csrf, reviewbody } = req.body
+    console.log(reviewbody);
+    const userId = req.session.auth.userId
+    db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
+    res.redirect('/')
+}))
 
 
 module.exports = router;
