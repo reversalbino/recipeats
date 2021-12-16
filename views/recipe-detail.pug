@@ -44,13 +44,11 @@ block content
                     each review in reviews
                         tr(class=`reviewRow-${review.id}` id=`${review.userId}`)
                             td(class="reviewUserId")= review.userId
-                            td(class="reviewReviewText")= review.reviewText
-                                if locals.userId === review.userId
-                                    form(action=`/recipes/reviews/${review.id}/edit`, method="post")
-                                        input(type="hidden" value=csrfToken name="_csrf")
-                                        button#editButton Edit 
-                                    form(action=`/recipes/reviews/${review.id}/delete`, method="post") 
-                                        input(type="hidden" value=csrfToken name="_csrf")
-                                        button(value=`${review.id}`)#deleteButton Delete 
+                            td(class=`reviewText-${review.id}` contenteditable="false")= review.reviewText
+                        if locals.userId === review.userId
+                            form.editform(action=`/recipes/reviews/${review.id}/edit`, method="post")
+                                button(value=`${review.id}` class="editbtn")#editButton Edit 
+                            form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post") 
+                                button(value=`${review.id}` class="deletebtn")#deleteButton Delete 
                                 
 
