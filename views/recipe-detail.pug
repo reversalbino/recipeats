@@ -28,22 +28,29 @@ block content
         div.instructions
             each instruction in recipe.Instructions
                 p= instruction.specification
-    div.reviews 
+    div.reviewsContainer
         if locals.authenticated
             form(action= `/recipes/${recipe.id}/review/add`, method="post") 
                 input(type="hidden" value=csrfToken name="_csrf")
                 textarea(name="reviewbody" value= reviews.reviewText maxlength='255')
                 button(type="submit") Submit Review
-        if reviews 
-            each review in reviews  
-                table 
-                    thead 
-                        tr
-                            th username
-                            th review 
-                            th rating
-                    tbody 
-                        tr
-                            td= review.userId
-                            td= review.reviewText
-                        //- tr= rating.value
+        if reviews   
+            table 
+                thead 
+                    tr
+                        th username
+                        th review 
+                tbody 
+                    each review in reviews
+                        tr(class="reviewRow" id=`${review.userId}`)
+                            td(class="reviewUserId")= review.userId
+                            td(class="reviewReviewText")= review.reviewText
+                                if (2 === 2)
+                                form(action=`/recipes/reviews/${review.id}/edit`, method="post")
+                                    input(type="hidden" value=csrfToken name="_csrf")
+                                    button#editButton Edit 
+                                form(action=`/recipes/reviews/${review.id}/delete`, method="post") 
+                                    input(type="hidden" value=csrfToken name="_csrf")
+                                    button#deleteButton Delete 
+                                
+
