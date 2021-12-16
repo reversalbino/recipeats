@@ -6,5 +6,7 @@ block content
         ul Recipes 
             for recipe in recipesOnSpecificBoard.Recipes
                 li: a.recipe-container(href=`/recipes/${recipe.id}`)=recipe.title
+                    form(method='POST' action=`/boards/${boardId}/${recipe.id}/delete`)
+                        button(type='submit') Delete From Board
     else 
         p You have no recipes on this board :(
