@@ -87,9 +87,9 @@ router.use((req, res, next) => {
     next();
 })
 
-router.put('/recipes/reviews/:id/edit', requireAuth, asyncHandler(async(req, res, next) => {
-    console.log('------------------edit 2-----');
-    const {theReviewText} = req.body
+router.post('/reviews/:id/edit', requireAuth, asyncHandler(async(req, res, next) => {
+    const {theReviewText} = req.body;
+    console.log('==================================', theReviewText, '====================================');
     const reviewToUpdate = await db.Review.findByPk(req.params.id);
     if (reviewToUpdate) {
         await reviewToUpdate.update({
