@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', csrfProtection, async (req, res, next) => {
+    const userId = req.session.auth.userId
     const recipe = await db.Recipe.findByPk(req.params.id, {
         include: [db.Ingredient, db.Instruction]
     });
@@ -31,7 +32,7 @@ router.get('/:id', csrfProtection, async (req, res, next) => {
         //            console.log(instruction.dataValues.specification.split(','))
         //        })
         //        console.log(instructionList)
-        res.render('recipe-detail', { recipe, recipeBoards, reviews, csrfToken: req.csrfToken()})
+        res.render('recipe-detail', { recipe, recipeBoards, reviews, userId, csrfToken: req.csrfToken()})
 });
 
 // router.use((req, res, next) => {
@@ -71,10 +72,6 @@ router.post('/:rId/boards', async (req, res, next) => {
     res.redirect(`/recipes/${recipeId}`)
 })
 
-router.use((req, res, next) => {
-    console.log('------------------review 1-----');
-    next();
-})
 
 router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
     console.log('------------------review 2-----', req.body)
@@ -82,19 +79,27 @@ router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(r
     // console.log(reviewbody);
     const userId = req.session.auth.userId
     db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
-    res.redirect('/')
+    res.redirect(`/recipes/${req.params.id}`)
 }));
+
 router.use((req, res, next) => {
-    console.log('------------------TESTING DELETE FUNCTION')
-    next()
+    console.log('------------------delete 1-----');
+    next();
 })
 
-router.post('/reviews/:id/delete', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
-    console.log('------------------delete -----');
+router.delete('/reviews/:id/delete', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
+    console.log('------------------delete 2-----');
     const userId = req.session.auth.userId
+    reviewId = req.params.id
     const reviewToDelete = await db.Review.findByPk(req.params.id);
-    reviewToDelete.destroy();
-    return;
+    if (reviewToDelete) {
+        await reviewToDelete.destroy();
+        res.json({message: 'Success'})
+        // res.redirect(`/recipes/${reviewToDelete.recipeId}`)
+    } else {
+        res.json({message: 'Failed'})
+    }
+    // res.send({userId, reviewId})
     // res.send(`SUCCESFULLY DELETED`)
     //  console.log(reviewToDelete)
     //  .destroy(); 
