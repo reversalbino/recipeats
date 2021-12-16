@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator');
 const { csrfProtection, asyncHandler } = require('./utils');
 const db = require('../db/models'); //db.Model
 const { requireAuth } = require('../auth');
+const res = require('express/lib/response');
 
 const router = express.Router();
 
@@ -58,7 +59,7 @@ router.get('/:id(\\d+)', requireAuth, asyncHandler(async(req, res) => {
     // db.RecipesOnBoard.findAll();
 
     // console.log(recipes[0].Recipes);
-    res.render('board', { title: 'Recipeats | Board', recipesOnSpecificBoard})
+    res.render('board', { title: 'Recipeats | Board', recipesOnSpecificBoard, boardId })
 }));
 
 router.use((req, res, next) => {
@@ -69,10 +70,31 @@ router.use((req, res, next) => {
 router.post('/delete/:id', requireAuth, asyncHandler(async(req, res) => {
     console.log('-----------DELETE BOARD 2----------')
     let boardId = req.params.id;
-    let board = await db.Board.findByPk(boardId)
+    let board = await db.Board.findByPk(boardId);
+
+    await db.RecipesOnBoard.findAll({
+        where: { boardId }
+    })
+    .then(recipeList => {
+        recipeList.forEach(recipe => {
+            recipe.destroy();
+        });
+    });
+
 
     await board.destroy();
     res.redirect('/boards');
+}));
+
+router.post('/:bId/:rId/delete', requireAuth, asyncHandler(async(req, res) => {
+    let boardId = req.params.bId, recipeId = req.params.rId;
+
+    let recipeToDelete = await db.RecipesOnBoard.findOne({
+        where: {boardId, recipeId}
+    });
+
+    await recipeToDelete.destroy();
+    res.redirect(`/boards/${boardId}`);
 }));
 
 // console.log('----recipes-----', recipes);
