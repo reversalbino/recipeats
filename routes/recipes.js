@@ -18,13 +18,12 @@ router.get('/:id', csrfProtection, async (req, res, next) => {
         include: [db.Ingredient, db.Instruction]
     });
  let recipeBoards;
- let reviews
+    const reviews = await db.Review.findAll({
+        where: {recipeId: req.params.id}
+    });
     if(req.session.auth) {
         recipeBoards = await db.Board.findAll({
             where: {userId: req.session.auth.userId}
-        })
-        reviews = await db.Review.findAll({
-            where: {recipeId: req.params.id}
         })
     console.log(recipe)
     }

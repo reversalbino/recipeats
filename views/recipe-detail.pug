@@ -38,10 +38,12 @@ block content
             each review in reviews  
                 table 
                     thead 
-                        th username
-                        th review 
-                        th rating
+                        tr
+                            th username
+                            th review 
+                            th rating
                     tbody 
-                        tr= review.userId
-                        tr= review.reviewText
-                        tr= rating.value
+                        tr
+                            td= review.userId
+                            td= review.reviewText
+                        //- tr= rating.value
