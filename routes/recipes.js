@@ -44,8 +44,8 @@ router.post('/:rId/boards', async (req, res, next) => {
     // console.log('--------ADD RECIPE TO BOARD 2');
     const recipeId = req.params.rId
     const boardId = req.body.addToBoard
-    //NOTE query all recipes on a specific board that belong to a user 
-    
+    //NOTE query all recipes on a specific board that belong to a user
+
 
     const recipesOnSpecificBoard = await db.RecipesOnBoard.findAll({
         where: {
@@ -66,20 +66,33 @@ router.post('/:rId/boards', async (req, res, next) => {
         errors.push('Recipe is already on this board');
 
     }
-    
+
     // console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
     // console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
     res.redirect(`/recipes/${recipeId}`)
 })
 
 
-router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
-    console.log('------------------review 2-----', req.body)
-    const { _csrf, reviewbody } = req.body
-    // console.log(reviewbody);
+// router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
+//     console.log('------------------review 2-----', req.body)
+//     const { _csrf, reviewbody } = req.body
+//     // console.log(reviewbody);
+//     const userId = req.session.auth.userId
+//     db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
+//     res.redirect(`/recipes/${req.params.id}`)
+// }));
+
+router.post('/:id/review/add', requireAuth, asyncHandler(async(req, res, next) => {
+    console.log('------------------TESTING FOR CREATE REVIEW-----', req.body)
+    const { reviewbody } = req.body
     const userId = req.session.auth.userId
-    db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
-    res.redirect(`/recipes/${req.params.id}`)
+
+    db.Review.create({
+        reviewText: reviewbody,
+        recipeId: req.params.id,
+        userId
+    })
+    res.json({message: 'Success', userId: userId})
 }));
 
 router.use((req, res, next) => {
@@ -115,7 +128,7 @@ router.delete('/reviews/:id/delete', requireAuth, asyncHandler(async(req, res, n
     // res.send({userId, reviewId})
     // res.send(`SUCCESFULLY DELETED`)
     //  console.log(reviewToDelete)
-    //  .destroy(); 
+    //  .destroy();
 
 }));
 
