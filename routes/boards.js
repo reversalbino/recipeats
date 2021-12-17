@@ -4,7 +4,7 @@ const { csrfProtection, asyncHandler } = require('./utils');
 const db = require('../db/models'); //db.Model
 const { requireAuth } = require('../auth');
 const res = require('express/lib/response');
-
+//test
 const router = express.Router();
 
 router.get('/', requireAuth, asyncHandler(async(req, res) => {

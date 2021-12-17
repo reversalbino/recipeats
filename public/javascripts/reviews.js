@@ -1,5 +1,6 @@
 window.addEventListener("load", (event)=>{
     console.log("hello from reviews!")
+//test
 
     const deleteButtons = document.querySelectorAll('#deleteButton')
     const editButtons = document.querySelectorAll('#editButton');
