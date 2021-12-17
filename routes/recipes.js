@@ -53,6 +53,7 @@ router.get("/:id", csrfProtection, async (req, res, next) => {
 //     next();
 // });
 
+
 router.post("/:rId/boards", async (req, res, next) => {
   // console.log('--------ADD RECIPE TO BOARD 2');
   const recipeId = req.params.rId;
@@ -106,6 +107,7 @@ router.use((req, res, next) => {
   next();
 });
 
+
 router.post("/:id/:uId/:rating",requireAuth, asyncHandler(async (req, res, next) => {
     console.log("------------------edit 2-----");
     const recipeId = req.params.id;
@@ -154,6 +156,25 @@ router.put(
   asyncHandler(async (req, res, next) => {
     console.log("------------------edit 2-----");
     const { theReviewText } = req.body;
+    }
+
+    // console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
+    // console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
+    res.redirect(`/recipes/${recipeId}`)
+})
+
+
+// router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
+//     console.log('------------------review 2-----', req.body)
+//     const { _csrf, reviewbody } = req.body
+//     // console.log(reviewbody);
+//     const userId = req.session.auth.userId
+//     db.Review.create({reviewText: reviewbody, recipeId: req.params.id, userId})
+//     res.redirect(`/recipes/${req.params.id}`)
+// }));
+
+
+
     const reviewToUpdate = await db.Review.findByPk(req.params.id);
     if (reviewToUpdate) {
       await reviewToUpdate.update({
@@ -184,7 +205,12 @@ router.delete(
     // res.send(`SUCCESFULLY DELETED`)
     //  console.log(reviewToDelete)
     //  .destroy();
+
   })
-);
+
+
+
+
+
 
 module.exports = router;

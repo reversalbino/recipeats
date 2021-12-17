@@ -37,23 +37,24 @@ block content
                 p= instruction.specification
     div.reviewsContainer
         if locals.authenticated
-            form(action= `/recipes/${recipe.id}/review/add`, method="post") 
+            form(action= `/recipes/${recipe.id}/review/add`, method="post" id="submitReviewForm")
                 input(type="hidden" value=csrfToken name="_csrf")
-                textarea(name="reviewbody" value= reviews.reviewText maxlength='255')
-                button(type="submit") Submit Review
-        if reviews   
-            table 
-                thead 
+                textarea(name="reviewbody" value= reviews.reviewText maxlength='255' )
+                button(type="submit" id="submitReviewButton" value=`${recipe.id}`) Submit Review
+        if reviews
+            table
+                thead
                     tr
                         th username
-                        th review 
-                tbody 
+                        th review
+                tbody.red
                     each review in reviews
                         tr(class=`reviewRow-${review.id}` id=`${review.userId}`)
                             td(class="reviewUserId")= review.userId
                             td(class=`reviewText-${review.id}` contenteditable="false")= review.reviewText
                         if locals.userId === review.userId
                             form.editform(action=`/recipes/reviews/${review.id}/edit`, method="post")
+
                                 button(value=`${review.id}` class="editbtn")#editButton Edit 
                             form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post") 
                                 button(value=`${review.id}` class="deletebtn")#deleteButton Delete 
@@ -77,4 +78,9 @@ block content
 
         
                                 
+
+
+                                button(value=`${review.id}` class="editbtn")#editButton Edit
+                            form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post")
+                                button(value=`${review.id}` class="deletebtn")#deleteButton Delete
 
