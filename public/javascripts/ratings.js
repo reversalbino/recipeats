@@ -1,3 +1,6 @@
+
+//test
+=======
 window.addEventListener("DOMContentLoaded", (e) => {
 
     const starContainer = document.querySelector('.addrating');
@@ -80,3 +83,4 @@ console.log(data)
     //     })
 
 })
+

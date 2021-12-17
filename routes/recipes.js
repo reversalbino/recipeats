@@ -1,9 +1,13 @@
-const express = require("express");
-const { check, validationResult } = require("express-validator");
-const { csrfProtection, asyncHandler } = require("./utils");
-const db = require("../db/models"); //db.Model
-const { loginUser, logoutUser, requireAuth } = require("../auth");
-const { application } = require("express");
+
+const express = require('express');
+const { check, validationResult } = require('express-validator');
+const { csrfProtection, asyncHandler } = require('./utils');
+const db = require('../db/models'); //db.Model
+const { loginUser, logoutUser, requireAuth } = require('../auth');
+const { application } = require('express');
+//test
+//test
+
 
 const router = express.Router();
 let errors = [];
