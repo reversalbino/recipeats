@@ -41,12 +41,12 @@ block content
                         th username
                         th review
                 tbody.red
-                        //- tr(class=`reviewRow-${review.id}` id=`${review.userId}`)
-                        //-     td(class="reviewUserId")= review.userId
-                        //-     td(class=`reviewText-${review.id}` contenteditable="false")= review.reviewText
-                each review in reviews
-                    if locals.userId === review.userId
-                        form.editform(action=`/recipes/reviews/${review.id}/edit`, method="post")
-                            button(value=`${review.id}` class="editbtn")#editButton Edit
-                        form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post")
-                            button(value=`${review.id}` class="deletebtn")#deleteButton Delete
+                    each review in reviews
+                        tr(class=`reviewRow-${review.id}` id=`${review.userId}`)
+                            td(class="reviewUserId")= review.userId
+                            td(class=`reviewText-${review.id}` contenteditable="false")= review.reviewText
+                        if locals.userId === review.userId
+                            form.editform(action=`/recipes/reviews/${review.id}/edit`, method="post")
+                                button(value=`${review.id}` class="editbtn")#editButton Edit
+                            form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post")
+                                button(value=`${review.id}` class="deletebtn")#deleteButton Delete
