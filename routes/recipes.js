@@ -150,18 +150,24 @@ router.post("/:id/:uId/:rating",requireAuth, asyncHandler(async (req, res, next)
   })
 );
 
-router.put(
-  "/recipes/reviews/:id/edit",
-  requireAuth,
-  asyncHandler(async (req, res, next) => {
+router.put("/recipes/reviews/:id/edit",requireAuth,asyncHandler(async (req, res, next) => {
     console.log("------------------edit 2-----");
     const { theReviewText } = req.body;
-    }
-
     // console.log('BOOLEAN TEST', recipeIdList.includes(recipeId), recipeId) //TRUE
     // console.log("---------------------------------", `recipeIdList: ${recipeIdList}`)
+    const reviewToUpdate = await db.Review.findByPk(req.params.id);
+    if (reviewToUpdate) {
+        await reviewToUpdate.update({
+            reviewText: theReviewText,
+        });
+        res.json({ message: "Success" });
+    } else {
+        res.json({ message: "Failure" });
+    }
     res.redirect(`/recipes/${recipeId}`)
-})
+    })
+    );
+
 
 
 // router.post('/:id/review/add', requireAuth, csrfProtection, asyncHandler(async(req, res, next) => {
@@ -174,23 +180,7 @@ router.put(
 // }));
 
 
-
-    const reviewToUpdate = await db.Review.findByPk(req.params.id);
-    if (reviewToUpdate) {
-      await reviewToUpdate.update({
-        reviewText: theReviewText,
-      });
-      res.json({ message: "Success" });
-    } else {
-      res.json({ message: "Failure" });
-    }
-  })
-);
-
-router.delete(
-  "/reviews/:id/delete",
-  requireAuth,
-  asyncHandler(async (req, res, next) => {
+router.delete("/reviews/:id/delete",requireAuth,asyncHandler(async (req, res, next) => {
     const userId = req.session.auth.userId;
     reviewId = req.params.id;
     const reviewToDelete = await db.Review.findByPk(req.params.id);
@@ -206,7 +196,7 @@ router.delete(
     //  console.log(reviewToDelete)
     //  .destroy();
 
-  })
+  }));
 
 
 

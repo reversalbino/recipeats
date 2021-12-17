@@ -76,11 +76,3 @@ block content
             p.notloggedtext Please Log In or Register to add a rating and write a review!
     script(src='/javascripts/ratings.js')
 
-        
-                                
-
-
-                                button(value=`${review.id}` class="editbtn")#editButton Edit
-                            form.deleteform(action=`/recipes/reviews/${review.id}/delete`, method="post")
-                                button(value=`${review.id}` class="deletebtn")#deleteButton Delete
-
